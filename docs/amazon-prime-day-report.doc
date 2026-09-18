@@ -1,0 +1,62 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="UTF-8">
+<title>Prime Day 2026 Report</title>
+<style>
+body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; margin: 40px; }
+h1 { font-size: 18pt; }
+h2 { font-size: 14pt; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+td, th { border: 1px solid #ccc; padding: 6px; text-align: left; }
+th { background: #f0f0f0; }
+.prime { background: #e8f5e9; }
+.highlight { font-weight: bold; color: #2e7d32; }
+.red { color: #c62828; }
+</style>
+</head>
+<body>
+
+<h1>Amazon Ads — Prime Day 2026 Performance Report</h1>
+<p><b>Generated:</b> 2026-07-10 &nbsp;|&nbsp; <b>Period:</b> 2026-06-28 to 2026-07-08 &nbsp;|&nbsp; <b>Prime Day:</b> July 4-6</p>
+
+<h2>Executive Summary</h2>
+<p>Prime Day drove a <b>127.7% increase</b> in average daily sales. ROAS was <span class="highlight">5.15x</span> during Prime Day vs 2.41x on non-Prime days.</p>
+
+<table>
+<tr><th>Metric</th><th>Prime Day (3 days)</th><th>Non-Prime (8 days)</th><th>Change</th></tr>
+<tr class="prime"><td>Avg Daily Sales</td><td><b>₹1,231.75</b></td><td>₹541.00</td><td class="highlight">+127.7%</td></tr>
+<tr><td>Avg Daily Spend</td><td>₹239.25</td><td>₹224.77</td><td>+6.4%</td></tr>
+<tr class="prime"><td>Avg Daily Purchases</td><td><b>3.3</b></td><td>1.9</td><td class="highlight">+77.8%</td></tr>
+<tr><td>ROAS</td><td class="highlight">5.15x</td><td>2.41x</td><td>+113.7%</td></tr>
+<tr><td>Total Sales</td><td>₹3,695.26</td><td>₹4,327.97</td><td></td></tr>
+<tr><td>Total Spend</td><td>₹717.76</td><td>₹1,798.18</td><td></td></tr>
+<tr><td>Total Purchases</td><td>10</td><td>15</td><td></td></tr>
+</table>
+
+<h2>Daily Breakdown</h2>
+
+<table>
+<tr><th>Date</th><th>Sales (₹)</th><th>Spend (₹)</th><th>Purchases</th><th>ROAS</th></tr>
+<tr><td>Jun 28</td><td>₹686</td><td>₹204</td><td>2</td><td>3.37x</td></tr>
+<tr><td>Jun 29</td><td>₹572</td><td>₹118</td><td>2</td><td>4.83x</td></tr>
+<tr><td>Jun 30</td><td>₹991</td><td>₹390</td><td>3</td><td>2.54x</td></tr>
+<tr><td>Jul 1</td><td>₹224</td><td>₹214</td><td>1</td><td>1.04x</td></tr>
+<tr><td>Jul 2</td><td>₹563</td><td>₹189</td><td>2</td><td>2.99x</td></tr>
+<tr><td>Jul 3</td><td>₹462</td><td>₹187</td><td>2</td><td>2.47x</td></tr>
+<tr class="prime"><td><b>Jul 4</b></td><td><b>₹997</b></td><td>₹340</td><td><b>4</b></td><td>2.93x</td></tr>
+<tr class="prime"><td><b>Jul 5</b></td><td><b>₹529</b></td><td>₹137</td><td>2</td><td>3.87x</td></tr>
+<tr class="prime"><td><b>Jul 6</b></td><td><b>₹2,170</b></td><td>₹241</td><td><b>4</b></td><td><b>9.01x</b></td></tr>
+<tr><td>Jul 7</td><td class="red">₹0</td><td>₹299</td><td>0</td><td class="red">0.00x</td></tr>
+<tr><td>Jul 8</td><td>₹831</td><td>₹198</td><td>3</td><td>4.20x</td></tr>
+</table>
+
+<h2>Key Takeaways</h2>
+<ul>
+<li><b>Prime Day worked.</b> Sales up 127.7%, ROAS doubled to 5.15x.</li>
+<li><b>July 6 was the best day</b> — ₹2,170 sales at 9.01x ROAS.</li>
+<li><b>July 7 (post-Prime Day)</b> had ₹299 spend with zero sales — worst wasted spend.</li>
+<li>Spend only increased 6.4% but sales jumped 127.7% — much better efficiency.</li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,432 @@
+# Build Amazon Ads MCP Authentication & Client Integration
+
+You are an experienced senior backend engineer.
+
+Your goal is to build a production-quality Amazon Ads integration that authenticates my Amazon Ads account, retrieves my advertising profiles, and prepares my project to use the official Amazon Ads MCP Server.
+
+## Context
+
+I already have:
+
+* Amazon Ads API approval
+* Login with Amazon (LWA) application
+* Client ID
+* Client Secret
+* advertising::campaign_management scope
+* A Node.js project (integrate into the existing project)
+* Environment variables stored in `.env.local`
+
+Do NOT ask me for my secrets.
+
+Read everything from `.env.local`.
+
+---
+
+# Environment Variables
+
+Create `.env.local.example`
+
+Include:
+
+```env
+AMAZON_CLIENT_ID=
+AMAZON_CLIENT_SECRET=
+AMAZON_REDIRECT_URI=http://localhost:3000/auth/amazon/callback
+
+AMAZON_REFRESH_TOKEN=
+AMAZON_ACCESS_TOKEN=
+AMAZON_PROFILE_ID=
+
+AMAZON_REGION=FE
+```
+
+Never commit secrets.
+
+---
+
+# Folder Structure
+
+Create clean modules.
+
+```
+src/
+
+amazon/
+
+auth/
+
+oauth.ts
+
+tokenManager.ts
+
+profiles.ts
+
+client.ts
+
+mcp.ts
+
+routes.ts
+
+types.ts
+
+config.ts
+```
+
+Use dependency injection where appropriate.
+
+---
+
+# Step 1
+
+Implement Login with Amazon OAuth.
+
+Create
+
+GET /auth/amazon
+
+This endpoint should
+
+* Generate a secure state parameter
+* Redirect to Amazon Login with Amazon
+* Use
+
+scope=advertising::campaign_management
+
+---
+
+# Step 2
+
+Implement
+
+GET /auth/amazon/callback
+
+Read
+
+code
+
+Exchange it with
+
+POST
+
+https://api.amazon.com/auth/o2/token
+
+Retrieve
+
+* access_token
+* refresh_token
+* expires_in
+
+Print
+
+✓ Access Token Received
+
+✓ Refresh Token Received
+
+Store refresh token inside
+
+.env.local
+
+Explain where this should be securely stored in production.
+
+---
+
+# Step 3
+
+Create
+
+getAccessToken()
+
+Behavior
+
+If access token expired
+
+Automatically refresh it using
+
+refresh_token
+
+using Amazon LWA OAuth.
+
+Never require another login.
+
+---
+
+# Step 4
+
+Immediately call
+
+GET
+
+https://advertising-api.amazon.com/v2/profiles
+
+Headers
+
+Authorization
+
+Bearer ACCESS_TOKEN
+
+Amazon-Advertising-API-ClientId
+
+CLIENT_ID
+
+Print every profile found.
+
+Display
+
+Profile ID
+
+Country
+
+Currency
+
+Account Type
+
+Account Name
+
+Automatically save the chosen profile into
+
+AMAZON_PROFILE_ID
+
+if only one exists.
+
+If multiple exist
+
+display them nicely.
+
+---
+
+# Step 5
+
+Create reusable Amazon Ads Client
+
+Automatically inject
+
+Authorization
+
+Amazon-Advertising-API-ClientId
+
+Amazon-Advertising-API-Scope
+
+into every request.
+
+---
+
+# Step 6
+
+Create helper methods
+
+getProfiles()
+
+getCampaigns()
+
+getCampaign()
+
+getAdGroups()
+
+getKeywords()
+
+getTargets()
+
+generateReport()
+
+downloadReport()
+
+searchTerms()
+
+Do NOT use mock data.
+
+---
+
+# Step 7
+
+Implement Amazon Ads MCP Configuration
+
+Create
+
+amazon/mcp.ts
+
+Generate the configuration needed for the official Amazon Ads MCP Server.
+
+Use
+
+Region
+
+NA
+
+EU
+
+FE
+
+based on
+
+AMAZON_REGION
+
+Generate configuration like
+
+```
+{
+"url":"https://advertising-ai-fe.amazon.com/mcp",
+"headers":{
+"Authorization":"Bearer ...",
+"Amazon-Ads-ClientId":"...",
+"Amazon-Advertising-API-Scope":"..."
+}
+}
+```
+
+Do NOT hardcode tokens.
+
+Always retrieve a fresh access token.
+
+---
+
+# Step 8
+
+Create an MCP helper.
+
+Function
+
+connectAmazonMCP()
+
+Returns
+
+* MCP endpoint
+* Required headers
+* Dynamic Context Mode configuration
+* Fixed Context Mode configuration
+
+---
+
+# Step 9
+
+Implement good logging.
+
+Show
+
+✓ OAuth Success
+
+✓ Token Refreshed
+
+✓ Profiles Loaded
+
+✓ MCP Ready
+
+Show detailed errors for
+
+invalid_scope
+
+invalid_client
+
+expired_token
+
+invalid_grant
+
+network failures
+
+401
+
+403
+
+429
+
+---
+
+# Step 10
+
+Create CLI commands
+
+npm run amazon:login
+
+Starts OAuth flow.
+
+npm run amazon:profiles
+
+Lists all profiles.
+
+npm run amazon:test
+
+Tests Ads API.
+
+npm run amazon:mcp
+
+Prints ready-to-copy Amazon MCP configuration.
+
+---
+
+# Step 11
+
+Create documentation.
+
+Create
+
+docs/amazon-ads.md
+
+Include
+
+How OAuth works
+
+How refresh tokens work
+
+How to change regions
+
+How to regenerate tokens
+
+How to connect Claude Desktop
+
+How to connect Claude Code
+
+How to connect Kiro
+
+How to connect any MCP client
+
+---
+
+# Step 12
+
+After everything works
+
+Automatically test
+
+OAuth
+
+↓
+
+Refresh Token
+
+↓
+
+Access Token
+
+↓
+
+Profiles API
+
+↓
+
+Campaign API
+
+↓
+
+Report Generation
+
+↓
+
+Amazon MCP Configuration
+
+Print
+
+✅ Amazon Ads Integration Complete
+
+with every discovered account and profile.
+
+---
+
+Requirements
+
+* Production-quality code.
+* Strong typing.
+* No duplicated code.
+* Modular architecture.
+* Clean error handling.
+* Extensive comments.
+* No placeholders except environment variables.
+* Build everything necessary so I only need to fill in `.env.local`, run the login command once, authorize my account, and have a fully working Amazon Ads API + official Amazon Ads MCP integration.

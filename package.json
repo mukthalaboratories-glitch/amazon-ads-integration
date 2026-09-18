@@ -1,0 +1,28 @@
+{
+  "name": "amazon-ads-integration",
+  "version": "1.0.0",
+  "description": "Amazon Ads API + SP-API (Selling Partner API) integration.",
+  "scripts": {
+    "amazon:login": "tsx scripts/amazon-login.ts",
+    "amazon:profiles": "tsx scripts/amazon-profiles.ts",
+    "amazon:test": "tsx scripts/amazon-test.ts",
+    "amazon:mcp": "tsx scripts/amazon-mcp.ts",
+    "amazon:mcp-proxy": "tsx scripts/amazon-mcp-proxy.ts",
+    "sp-api:sales": "tsx scripts/sp-api-check-sales.ts",
+    "sp-api:report": "tsx scripts/sp-api-check-sales.ts"
+  },
+  "dependencies": {
+    "aws4": "^1.13.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "open": "^10.1.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/aws4": "^1.11.6",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.9",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3"
+  }
+}

@@ -1,0 +1,54 @@
+name: Daily Amazon Sync
+
+on:
+  schedule:
+    - cron: '30 21 * * *' # 03:00 IST (21:30 UTC)
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install deps
+        run: |
+          npm ci
+          pip install openpyxl requests
+
+      - name: Run daily auto
+        env:
+          # set these as GitHub Secrets (Settings > Secrets > Actions)
+          AMAZON_CLIENT_ID: ${{ secrets.AMAZON_CLIENT_ID }}
+          AMAZON_CLIENT_SECRET: ${{ secrets.AMAZON_CLIENT_SECRET }}
+          AMAZON_REFRESH_TOKEN: ${{ secrets.AMAZON_REFRESH_TOKEN }}
+          AMAZON_SELLER_ID: ${{ secrets.AMAZON_SELLER_ID }}
+          AMAZON_MARKETPLACE_ID: ${{ secrets.AMAZON_MARKETPLACE_ID }}
+          AMAZON_AD_CLIENT_ID: ${{ secrets.AMAZON_AD_CLIENT_ID }}
+          AMAZON_AD_CLIENT_SECRET: ${{ secrets.AMAZON_AD_CLIENT_SECRET }}
+          AMAZON_AD_REFRESH_TOKEN: ${{ secrets.AMAZON_AD_REFRESH_TOKEN }}
+          AMAZON_AD_PROFILE_ID: ${{ secrets.AMAZON_AD_PROFILE_ID }}
+          WEB_APP_URL: ${{ secrets.WEB_APP_URL }}
+          PUSH_KEY: ${{ secrets.PUSH_KEY }}
+        run: npx tsx scripts/daily-auto.ts
+
+      - name: Upload raw snapshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: raw-${{ github.run_id }}
+          path: |
+            amazon_*.json
+            docs/amazon-ads-raw-3mo.json
+            docs/inventory-*.json
