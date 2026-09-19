@@ -34,10 +34,13 @@ async function main() {
   run(`npx tsx scripts/pull-inventory.ts 2026-07-01 ${y}`);
   // 4. Amazon ads for yesterday
   run(`npx tsx scripts/amazon-3month-report.ts ${y} ${y}`);
-  // 5. Push everything (batch handles dedupe for all, but yesterday is the new bit)
+  // 5. Re-parse marketplace exports if new files dropped (auto-detect latest)
+  try { run(`python scripts/parse-flipkart-ads.py`); } catch {}
+  try { run(`python scripts/parse-firstcry-ads.py`); } catch {}
+  // 6. Push everything (batch handles dedupe for all, but yesterday is the new bit)
   // Use batch to avoid per-day summary overhead
   run(`python scripts/batch_push_missing.py`);
-  // 6. Push orders/inventory/ads (batch already pushed Daily, but orders/inventory/ads need separate)
+  // 7. Push orders/inventory/ads (batch already pushed Daily, but orders/inventory/ads need separate)
   run(`python scripts/push-orders.py`);
   run(`python scripts/push-inventory.py`);
   run(`python scripts/push-ads.py`);

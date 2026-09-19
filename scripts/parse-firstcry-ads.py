@@ -3,7 +3,9 @@ import json
 import os
 
 PROJECT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = os.path.join(PROJECT, 'Firstcry ads', 'Campaigns_Product_Ads_Performance__R(20260803-20260901)__E(20260902)__ID(6a97bb6b735429678b5c367b).xlsx')
+import glob as _glob
+_cands = sorted(_glob.glob(os.path.join(PROJECT, 'Firstcry ads', 'Campaigns_Product_Ads_Performance*.xlsx')), key=os.path.getmtime, reverse=True)
+SRC = _cands[0] if _cands else os.path.join(PROJECT, 'Firstcry ads', 'Campaigns_Product_Ads_Performance__R(20260803-20260901)__E(20260902)__ID(6a97bb6b735429678b5c367b).xlsx')
 OLD = os.path.join(PROJECT, 'Firstcry ads', 'firstcry_ads.json')
 OUT = os.path.join(PROJECT, 'Firstcry ads', 'firstcry_ads.json')
 
@@ -33,7 +35,8 @@ def main():
 
     with open(OLD, 'r', encoding='utf-8') as f:
         old_rows = json.load(f)
-    kept_old = [r for r in old_rows if r['date'] < CUTOFF]
+    min_new = min(by_day.keys()) if by_day else CUTOFF
+    kept_old = [r for r in old_rows if r['date'] < min_new]
 
     out_rows = kept_old + [{
         'date': day,

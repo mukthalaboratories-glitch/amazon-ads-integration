@@ -86,18 +86,22 @@ FLIPKART_BY_DAY = {
 }
 
 
-FC_FILES = [
-    'dashboardsale_2026_06_01_to_2026_06_30 (1).xlsx',
-    'dashboardsale_2026_07_01_to_2026_07_31 (1).xlsx',
-    'dashboardsale_2026_08_01_to_2026_08_31 (7).xlsx',
-    'dashboardsale_2026_09_01_to_2026_09_30.xlsx',
-]
+import glob as _glob
+# auto-detect latest FirstCry/Flipkart sales (dedupe by POID/order_item_id handles overlaps)
+FC_FILES = sorted([os.path.basename(p) for p in _glob.glob(os.path.join(PROJECT, 'Firstcry sales', 'dashboardsale*.xlsx'))])
+if not FC_FILES:
+    FC_FILES = [
+        'dashboardsale_2026_06_01_to_2026_06_30 (1).xlsx',
+        'dashboardsale_2026_07_01_to_2026_07_31 (1).xlsx',
+        'dashboardsale_2026_08_01_to_2026_08_31 (7).xlsx',
+        'dashboardsale_2026_09_01_to_2026_09_30.xlsx',
+    ]
 
-FC_MAX_DAY = '2026-09-01'
+FC_MAX_DAY = '2099-12-31'  # no cap — files themselves define range, dedupe by POID handles overlaps
 
-FK_SALES_FILES = [
-    r'flipkart sales\1fe490a7-53b7-4ad4-8bc8-7edb75b47703_1788328552000.xlsx',
-]
+FK_SALES_FILES = sorted([os.path.join('flipkart sales', os.path.basename(p)) for p in _glob.glob(os.path.join(PROJECT, 'flipkart sales', '*.xlsx'))])
+if not FK_SALES_FILES:
+    FK_SALES_FILES = [r'flipkart sales\1fe490a7-53b7-4ad4-8bc8-7edb75b47703_1788328552000.xlsx']
 
 FK_PRICE_BY_SKU = {
     'Catche must-quit-o Insta Repellent (Pack of 8)': 420,

@@ -4,10 +4,28 @@ import os
 import sys
 
 PROJECT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC_LIST = [
-    (os.path.join(PROJECT, 'flipkart ads', 'kjcv7pk9f8e.csv'), '2026-08-01', 27),
-    (os.path.join(PROJECT, 'flipkart ads', 'n1f8mmil1ar.csv'), '2026-08-23', 11),
-]
+import glob as _glob
+from datetime import datetime as _dt
+def _discover_flipkart():
+    cands = []
+    for p in sorted(_glob.glob(os.path.join(PROJECT, 'flipkart ads', '*.csv')), key=os.path.getmtime):
+        try:
+            with open(p, 'r', encoding='utf-8-sig') as f:
+                head = ''.join([next(f) for _ in range(4)])
+            # find Start Time, End Time lines like "Start Time, 2026-08-01 00:00:00"
+            import re
+            m1 = re.search(r'Start Time,\s*([0-9]{4}-[0-9]{2}-[0-9]{2})', head)
+            m2 = re.search(r'End Time,\s*([0-9]{4}-[0-9]{2}-[0-9]{2})', head)
+            if m1 and m2:
+                s = m1.group(1); e = m2.group(1)
+                days = (_dt.strptime(e, '%Y-%m-%d') - _dt.strptime(s, '%Y-%m-%d')).days + 1
+                cands.append((p, s, days))
+            else:
+                cands.append((p, '2026-08-01', 27))
+        except Exception:
+            cands.append((p, '2026-08-01', 27))
+    return cands
+SRC_LIST = _discover_flipkart()
 OUT = os.path.join(PROJECT, 'flipkart ads', 'flipkart_ads.json')
 
 
