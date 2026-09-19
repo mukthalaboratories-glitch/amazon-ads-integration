@@ -28,12 +28,15 @@ jobs:
 
       - name: Run daily auto
         env:
-          # set these as GitHub Secrets (Settings > Secrets > Actions)
+          SP_API_CLIENT_ID: ${{ secrets.SP_API_CLIENT_ID }}
+          SP_API_CLIENT_SECRET: ${{ secrets.SP_API_CLIENT_SECRET }}
+          SP_API_REFRESH_TOKEN: ${{ secrets.SP_API_REFRESH_TOKEN }}
+          SP_API_REGION: ${{ secrets.SP_API_REGION }}
+          SP_API_SANDBOX: ${{ secrets.SP_API_SANDBOX }}
+          SP_API_MARKETPLACE_ID: ${{ secrets.SP_API_MARKETPLACE_ID }}
           AMAZON_CLIENT_ID: ${{ secrets.AMAZON_CLIENT_ID }}
           AMAZON_CLIENT_SECRET: ${{ secrets.AMAZON_CLIENT_SECRET }}
           AMAZON_REFRESH_TOKEN: ${{ secrets.AMAZON_REFRESH_TOKEN }}
-          AMAZON_SELLER_ID: ${{ secrets.AMAZON_SELLER_ID }}
-          AMAZON_MARKETPLACE_ID: ${{ secrets.AMAZON_MARKETPLACE_ID }}
           AMAZON_AD_CLIENT_ID: ${{ secrets.AMAZON_AD_CLIENT_ID }}
           AMAZON_AD_CLIENT_SECRET: ${{ secrets.AMAZON_AD_CLIENT_SECRET }}
           AMAZON_AD_REFRESH_TOKEN: ${{ secrets.AMAZON_AD_REFRESH_TOKEN }}
