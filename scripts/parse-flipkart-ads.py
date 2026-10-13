@@ -38,7 +38,8 @@ def parse_one(src, start, days):
             data_start = i
             break
     if data_start is None:
-        raise SystemExit(f'No header in {src}')
+        print(f'skip empty export {os.path.basename(src)} (no data rows)')
+        return {}
     reader = csv.DictReader(lines[data_start:])
     camps = {}
     for r in reader:
