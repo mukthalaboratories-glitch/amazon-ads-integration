@@ -33,7 +33,7 @@ except Exception as e:
     print('clear failed (already cleared or transient):', e)
 
 grand = {'rows': 0, 'units': 0, 'sales': 0.0}
-for month, ndays in ((6, 30), (7, 31), (8, 31), (9, 18)):
+for month, ndays in ((6, 30), (7, 31), (8, 31), (9, 30), (10, 10)):
     for d in range(1, ndays + 1):
         day = f'2026-{month:02d}-{d:02d}'
         rows = pd.build_rows(day)

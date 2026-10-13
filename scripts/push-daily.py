@@ -153,12 +153,48 @@ def load_firstcry():
 def load_flipkart_sales():
     fk = []
     seen_item = set()
+    seen_order = set()  # cross-format dedupe: order_id|sku|day (old OI: ids vs new numeric ids differ)
     known_pos = {r['po'] for rows in FLIPKART_BY_DAY.values() for r in rows}
     for rel in FK_SALES_FILES:
         fpath = os.path.join(PROJECT, rel)
         if not os.path.exists(fpath):
             continue
         wb = load_workbook(fpath, data_only=True)
+        # New format: 'Sales Report' sheet with actual prices (Event Type/Sub Type, Price after discount)
+        if 'Sales Report' in wb.sheetnames:
+            ws_fk = wb['Sales Report']
+            for r in ws_fk.iter_rows(min_row=2, values_only=True):
+                if not r or not any(r):
+                    continue
+                event, sub = str(r[7] or '').strip(), str(r[8] or '').strip()
+                if event != 'Sale' or sub != 'Sale':
+                    continue  # skip Return / Cancellation rows
+                order_id = str(r[1] or '').strip()
+                if order_id in known_pos:
+                    continue
+                sku = str(r[5] or '').strip('"').replace('SKU:', '').strip()
+                title = str(r[3] or '').strip().strip('"').strip()
+                try:
+                    qty = int(float(r[13] or 0))
+                except (TypeError, ValueError):
+                    qty = 0
+                if qty <= 0:
+                    continue
+                day = str(r[11] or '')[:10]
+                okey = f'{order_id}|{sku}|{day}'
+                if okey in seen_order:
+                    continue
+                seen_order.add(okey)
+                try:
+                    price = float(r[20] or 0)  # Price after discount = actual selling price
+                except (TypeError, ValueError):
+                    price = 0
+                name = FK_CANONICAL_NAME.get(sku, title)
+                fk.append({'po': order_id, 'day': day, 'sku': sku, 'product': name,
+                           'qty': qty, 'sales': round(price * qty, 2)})
+            continue
+        if 'Orders' not in wb.sheetnames:
+            continue
         ws_fk = wb['Orders']
         hdr = [c.value for c in ws_fk[1]]
         idx = {h: i for i, h in enumerate(hdr)}
@@ -174,6 +210,10 @@ def load_flipkart_sales():
             title = str(r[idx['product_title']] or '').strip().strip('"').strip()
             qty = int(r[idx['quantity']] or 0)
             day = str(r[idx['order_date']])[:10]
+            okey = f'{order_id}|{sku}|{day}'
+            if okey in seen_order:
+                continue
+            seen_order.add(okey)
             price = FK_PRICE_BY_SKU.get(sku)
             if price is None:
                 print(f'WARNING: no price for SKU {sku!r} ({title[:40]}), using 0')
@@ -186,7 +226,7 @@ def load_flipkart_sales():
 
 def build_rows(day, channels=None):
     amazon = []
-    for fname in ('amazon_june_raw.json', 'amazon_july_raw.json', 'amazon_aug_raw.json', 'amazon_sep_raw.json'):
+    for fname in ('amazon_june_raw.json', 'amazon_july_raw.json', 'amazon_aug_raw.json', 'amazon_sep_raw.json', 'amazon_oct_raw.json'):
         fpath = os.path.join(PROJECT, fname)
         if os.path.exists(fpath):
             with open(fpath, 'r', encoding='utf-8') as f:

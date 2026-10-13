@@ -10,6 +10,7 @@ const FILES = [
   path.join(process.cwd(), 'amazon_july_raw.json'),
   path.join(process.cwd(), 'amazon_aug_raw.json'),
   path.join(process.cwd(), 'amazon_sep_raw.json'),
+  path.join(process.cwd(), 'amazon_oct_raw.json'),
 ];
 
 function chunk(start: string, end: string): string[][] {

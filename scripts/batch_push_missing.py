@@ -3,11 +3,11 @@ spec = importlib.util.spec_from_file_location('pd', 'scripts/push-daily.py')
 pd = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(pd)
 rows=[]
-for m,nd in ((6,30),(7,31),(8,31),(9,15)):
+for m,nd in ((6,30),(7,31),(8,31),(9,30),(10,10)):
     for d in range(1, nd+1):
         day=f'2026-{m:02d}-{d:02d}'
         rows.extend(pd.build_rows(day))
-print(f'built {len(rows)} total rows for Jun1-Sep15')
+print(f'built {len(rows)} total rows for Jun1-Oct10')
 # dedupe via GET
 import time, requests
 URL=pd.WEB_APP_URL

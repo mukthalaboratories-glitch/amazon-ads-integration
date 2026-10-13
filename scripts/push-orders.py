@@ -9,7 +9,7 @@ WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz07KglX7GGgM6JCbaYxk78S7
 PUSH_KEY = 'catche-daily-2026'
 
 CHANNEL_FILES = {
-    'Amazon': ['amazon_june_raw.json', 'amazon_july_raw.json', 'amazon_aug_raw.json', 'amazon_sep_raw.json'],
+    'Amazon': ['amazon_june_raw.json', 'amazon_july_raw.json', 'amazon_aug_raw.json', 'amazon_sep_raw.json', 'amazon_oct_raw.json'],
 }
 
 

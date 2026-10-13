@@ -26,7 +26,7 @@ Stored as `W1..W4` in `Week` column. Display label: `W1 (1-7)`, `W2 (8-15)`, `W3
 ## Data Sources
 - Amazon SP-API: `amazon_june_raw.json`, `amazon_july_raw.json`, `amazon_aug_raw.json` (with `shipState`/`shipCity`). Pull via `scripts/pull-aug-range.ts`, backfill `scripts/backfill-order-location.ts`.
 - FirstCry sales: `Firstcry sales/dashboardsale_*.xlsx` — files deduped by `POID|ProductID`, catalog `FC_CATALOG`. Live: `(6).xlsx` Aug 1-26.
-- Flipkart sales: `flipkart sales/*.xlsx` Orders sheet, deduped by `order_item_id`, price map `FK_PRICE_BY_SKU`, include CANCELLED. Live: `80f896bd...xlsx` Aug 1-26.
+- Flipkart sales: `flipkart sales/*.xlsx` — new `Sales Report` format (actual `Price after discount`, only `Sale/Sale` events, returns excluded) + old `Orders` format (price map `FK_PRICE_BY_SKU` fallback), deduped cross-format by `order_id|sku|day`. Live: `1a66e6bc...(1).xlsx` May 27–Oct 10 (506 sales, 79 returns skipped).
 - Flipkart ads: `flipkart ads/kjcv7pk9f8e.csv` — period totals smeared evenly over 27 days.
 - FirstCry ads: `Firstcry ads/...20260801-20260826...xlsx` daily per-product, merged with old Jul data.
 - Amazon ads: `docs/amazon-ads-raw-3mo.json` via `scripts/amazon-3month-report.ts` — 12 report types, custom week.

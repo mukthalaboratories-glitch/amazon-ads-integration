@@ -24,6 +24,8 @@ async function main() {
       const get = (name: string) => cols[idx(name)]?.trim() || '';
       const qty = parseInt(get('quantity') || '0', 10) || 0;
       const price = parseFloat(get('item-price') || '0') || 0;
+      const itemPromo = Math.abs(parseFloat(get('item-promotion-discount') || '0') || 0);
+      const shipPromo = Math.abs(parseFloat(get('ship-promotion-discount') || '0') || 0);
       const day = (get('purchase-date') || '').slice(0, 10);
       if (!day || day < START || day > END) continue;
       if (qty <= 0) continue;
@@ -32,7 +34,9 @@ async function main() {
         sku: get('sku'),
         title: get('product-name'),
         units: qty,
-        sales: price,
+        sales: Math.round((price - itemPromo - shipPromo) * 100) / 100,
+        gross: price,
+        promo: Math.round((itemPromo + shipPromo) * 100) / 100,
         orderId: get('amazon-order-id'),
         day,
       });
